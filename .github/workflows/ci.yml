@@ -138,7 +138,7 @@ jobs:
       - name: Check for build output
         working-directory: frontend
         run: |
-          if [ ! -d "build" ]; then
+          if [ ! -d ".svelte-kit/output" ]; then
             echo "Build directory not found"
             exit 1
           fi
