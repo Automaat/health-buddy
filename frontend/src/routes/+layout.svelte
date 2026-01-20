@@ -9,11 +9,7 @@
 		{ href: '/medications', label: 'Medications', icon: '💊' },
 		{ href: '/supplements', label: 'Supplements', icon: '🌿' },
 		{ href: '/lab-results', label: 'Lab Results', icon: '🔬' },
-		{ href: '/conditions', label: 'Conditions', icon: '🏥' },
-		{ href: '/symptoms', label: 'Symptoms', icon: '🤒' },
-		{ href: '/appointments', label: 'Appointments', icon: '📅' },
 		{ href: '/goals', label: 'Health Goals', icon: '🎯' },
-		{ href: '/allergies', label: 'Allergies', icon: '⚠️' },
 		{ href: '/vaccinations', label: 'Vaccinations', icon: '💉' },
 		{ href: '/history', label: 'Medical History', icon: '📋' },
 		{ href: '/config', label: 'Settings', icon: '⚙️' }

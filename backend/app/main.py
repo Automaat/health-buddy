@@ -2,9 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import (
-    allergies,
-    appointments,
-    conditions,
     config,
     dashboard,
     goals,
@@ -13,7 +10,6 @@ from app.api import (
     medical_history,
     medications,
     supplements,
-    symptoms,
     vaccinations,
 )
 from app.core.config import settings
@@ -37,11 +33,7 @@ app.include_router(health_metrics.router, prefix=settings.api_prefix)
 app.include_router(medications.router, prefix=settings.api_prefix)
 app.include_router(supplements.router, prefix=settings.api_prefix)
 app.include_router(lab_results.router, prefix=settings.api_prefix)
-app.include_router(conditions.router, prefix=settings.api_prefix)
-app.include_router(symptoms.router, prefix=settings.api_prefix)
-app.include_router(appointments.router, prefix=settings.api_prefix)
 app.include_router(goals.router, prefix=settings.api_prefix)
-app.include_router(allergies.router, prefix=settings.api_prefix)
 app.include_router(vaccinations.router, prefix=settings.api_prefix)
 app.include_router(medical_history.router, prefix=settings.api_prefix)
 app.include_router(config.router, prefix=settings.api_prefix)
