@@ -1,6 +1,6 @@
 [tools]
 python = "3.14.2"
-node = "22"
+node = "24"
 
 [tasks.dev]
 description = "Run all services with Docker Compose"
