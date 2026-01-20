@@ -10,8 +10,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+backend/lib/
+backend/lib64/
 parts/
 sdist/
 var/
@@ -56,3 +56,14 @@ alembic/versions/*.pyc
 node_modules/
 .npm
 .pnpm-debug.log
+
+# SvelteKit
+frontend/.svelte-kit/
+frontend/build/
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+frontend/coverage/
+
+# Planning
+plan.md

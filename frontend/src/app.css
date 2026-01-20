@@ -1,0 +1,355 @@
+@import 'open-props/style';
+@import 'open-props/normalize';
+
+:root {
+	/* Nord Color Palette */
+	--nord0: #2e3440;
+	--nord1: #3b4252;
+	--nord2: #434c5e;
+	--nord3: #4c566a;
+	--nord4: #d8dee9;
+	--nord5: #e5e9f0;
+	--nord6: #eceff4;
+	--nord7: #8fbcbb;
+	--nord8: #88c0d0;
+	--nord9: #81a1c1;
+	--nord10: #5e81ac;
+	--nord11: #bf616a;
+	--nord12: #d08770;
+	--nord13: #ebcb8b;
+	--nord14: #a3be8c;
+	--nord15: #b48ead;
+
+	/* Theme Colors */
+	--color-bg: var(--nord0);
+	--color-bg-secondary: var(--nord1);
+	--color-bg-tertiary: var(--nord2);
+	--color-text: var(--nord6);
+	--color-text-secondary: var(--nord4);
+	--color-border: var(--nord3);
+
+	/* Semantic Colors */
+	--color-primary: var(--nord10);
+	--color-success: var(--nord14);
+	--color-warning: var(--nord13);
+	--color-error: var(--nord11);
+	--color-accent: var(--nord7);
+
+	/* Component Colors */
+	--color-card-bg: var(--nord1);
+	--color-card-hover: var(--nord2);
+	--color-input-bg: var(--nord2);
+	--color-button-primary: var(--nord10);
+	--color-button-success: var(--nord14);
+
+	/* Health-specific Colors */
+	--color-metric-blue: var(--nord10);
+	--color-metric-green: var(--nord14);
+	--color-metric-yellow: var(--nord13);
+	--color-metric-red: var(--nord11);
+	--color-metric-teal: var(--nord7);
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	background-color: var(--color-bg);
+	color: var(--color-text);
+	line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0 0 1rem 0;
+	font-weight: 600;
+	line-height: 1.2;
+	color: var(--color-text);
+}
+
+h1 {
+	font-size: 2.5rem;
+}
+h2 {
+	font-size: 2rem;
+}
+h3 {
+	font-size: 1.75rem;
+}
+h4 {
+	font-size: 1.5rem;
+}
+
+a {
+	color: var(--color-primary);
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+button {
+	cursor: pointer;
+	font-family: inherit;
+}
+
+/* Card Styles */
+.card {
+	background-color: var(--color-card-bg);
+	border-radius: var(--radius-2);
+	padding: var(--size-4);
+	box-shadow: var(--shadow-2);
+	transition: all 0.2s ease;
+}
+
+.card:hover {
+	background-color: var(--color-card-hover);
+	box-shadow: var(--shadow-3);
+}
+
+/* Metric Card Variants */
+.metric-card {
+	border-left: 4px solid transparent;
+}
+
+.metric-card.blue {
+	border-left-color: var(--color-metric-blue);
+}
+
+.metric-card.green {
+	border-left-color: var(--color-metric-green);
+}
+
+.metric-card.yellow {
+	border-left-color: var(--color-metric-yellow);
+}
+
+.metric-card.red {
+	border-left-color: var(--color-metric-red);
+}
+
+.metric-card.teal {
+	border-left-color: var(--color-metric-teal);
+}
+
+/* Button Styles */
+.btn {
+	padding: var(--size-2) var(--size-4);
+	border: none;
+	border-radius: var(--radius-2);
+	font-size: 1rem;
+	font-weight: 500;
+	transition: all 0.2s ease;
+	display: inline-flex;
+	align-items: center;
+	gap: var(--size-2);
+}
+
+.btn-primary {
+	background-color: var(--color-button-primary);
+	color: var(--color-text);
+}
+
+.btn-primary:hover {
+	background-color: var(--nord9);
+}
+
+.btn-success {
+	background-color: var(--color-button-success);
+	color: var(--nord0);
+}
+
+.btn-success:hover {
+	opacity: 0.9;
+}
+
+/* Input Styles */
+.input {
+	width: 100%;
+	padding: var(--size-2) var(--size-3);
+	background-color: var(--color-input-bg);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-2);
+	color: var(--color-text);
+	font-size: 1rem;
+	font-family: inherit;
+}
+
+.input:focus {
+	outline: none;
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 2px rgba(94, 129, 172, 0.2);
+}
+
+.input::placeholder {
+	color: var(--color-text-secondary);
+}
+
+/* Select Styles */
+.select {
+	width: 100%;
+	padding: var(--size-2) var(--size-3);
+	background-color: var(--color-input-bg);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-2);
+	color: var(--color-text);
+	font-size: 1rem;
+	font-family: inherit;
+	cursor: pointer;
+}
+
+.select:focus {
+	outline: none;
+	border-color: var(--color-primary);
+}
+
+/* Form Group */
+.form-group {
+	margin-bottom: var(--size-4);
+}
+
+.form-label {
+	display: block;
+	margin-bottom: var(--size-2);
+	font-weight: 500;
+	color: var(--color-text);
+}
+
+/* Table Styles */
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	background-color: var(--color-card-bg);
+	border-radius: var(--radius-2);
+	overflow: hidden;
+}
+
+.table th,
+.table td {
+	padding: var(--size-3);
+	text-align: left;
+	border-bottom: 1px solid var(--color-border);
+}
+
+.table th {
+	background-color: var(--color-bg-tertiary);
+	font-weight: 600;
+}
+
+.table tr:hover {
+	background-color: var(--color-card-hover);
+}
+
+/* Utility Classes */
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 var(--size-4);
+}
+
+.grid {
+	display: grid;
+	gap: var(--size-4);
+}
+
+.grid-2 {
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.flex {
+	display: flex;
+	gap: var(--size-3);
+}
+
+.flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.mb-4 {
+	margin-bottom: var(--size-4);
+}
+
+.mt-4 {
+	margin-top: var(--size-4);
+}
+
+/* Status Indicators */
+.status {
+	display: inline-block;
+	padding: var(--size-1) var(--size-3);
+	border-radius: var(--radius-2);
+	font-size: 0.875rem;
+	font-weight: 500;
+}
+
+.status-active {
+	background-color: var(--nord14);
+	color: var(--nord0);
+}
+
+.status-inactive {
+	background-color: var(--nord3);
+	color: var(--nord4);
+}
+
+.status-warning {
+	background-color: var(--nord13);
+	color: var(--nord0);
+}
+
+.status-error {
+	background-color: var(--nord11);
+	color: var(--nord6);
+}
+
+/* Modal Overlay */
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.7);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+}
+
+.modal {
+	background-color: var(--color-card-bg);
+	border-radius: var(--radius-3);
+	padding: var(--size-6);
+	max-width: 600px;
+	width: 90%;
+	max-height: 90vh;
+	overflow-y: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	h1 {
+		font-size: 2rem;
+	}
+	h2 {
+		font-size: 1.75rem;
+	}
+	h3 {
+		font-size: 1.5rem;
+	}
+}
