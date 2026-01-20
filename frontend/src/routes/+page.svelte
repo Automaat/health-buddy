@@ -152,22 +152,6 @@
 			{/if}
 		</Card>
 
-		<Card variant="yellow">
-			<h3>📅 Upcoming Appointments</h3>
-			<p class="metric-value">{dashboardData.upcoming_appointments.length}</p>
-			{#if dashboardData.upcoming_appointments.length === 0}
-				<p class="text-secondary">No appointments scheduled</p>
-			{:else}
-				<ul class="appointment-list">
-					{#each dashboardData.upcoming_appointments as appt}
-						<li>
-							{formatDate(appt.appointment_date)} - {appt.doctor_name} ({appt.specialty})
-						</li>
-					{/each}
-				</ul>
-			{/if}
-		</Card>
-
 		<Card variant="green">
 			<h3>🎯 Health Goals</h3>
 			<p class="metric-value">{dashboardData.health_goals.length}</p>
@@ -221,8 +205,6 @@
 				<li>Track your daily health metrics like blood pressure, weight, and heart rate</li>
 				<li>Manage your medications and supplements</li>
 				<li>Record lab results and monitor trends</li>
-				<li>Track medical conditions and symptoms</li>
-				<li>Schedule and track appointments</li>
 				<li>Set and monitor health goals</li>
 			</ul>
 		</Card>

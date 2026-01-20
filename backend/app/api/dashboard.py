@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.models import Appointment, HealthGoal, HealthMetric, LabResult, Medication, Supplement
+from app.models import HealthGoal, HealthMetric, LabResult, Medication, Supplement
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 
@@ -33,18 +33,6 @@ def get_dashboard_data(owner: str, db: Session = Depends(get_db)):
         .all()
     )
 
-    upcoming_appointments = (
-        db.query(Appointment)
-        .filter(
-            Appointment.owner == owner,
-            ~Appointment.is_completed,
-            Appointment.appointment_date >= now,
-        )
-        .order_by(Appointment.appointment_date)
-        .limit(5)
-        .all()
-    )
-
     recent_lab_results = (
         db.query(LabResult)
         .filter(LabResult.owner == owner)
@@ -63,7 +51,6 @@ def get_dashboard_data(owner: str, db: Session = Depends(get_db)):
         "latest_metrics": latest_metrics,
         "active_medications": active_medications,
         "active_supplements": active_supplements,
-        "upcoming_appointments": upcoming_appointments,
         "recent_lab_results": recent_lab_results,
         "active_goals": active_goals,
     }
