@@ -4,7 +4,7 @@
 
 	interface Props {
 		title: string;
-		value: number;
+		value: number | string;
 		unit: string;
 		measuredAt?: string;
 		variant?: 'blue' | 'green' | 'yellow' | 'red' | 'teal';

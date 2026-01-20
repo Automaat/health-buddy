@@ -25,7 +25,7 @@
 	$: glucose = dashboardData.latest_vitals.find((v) => v.metric_type === METRIC_TYPES.GLUCOSE);
 
 	// Weight trend chart
-	$: weightChartOptions: EChartsOption = {
+	const weightChartOptions: EChartsOption = {
 		tooltip: {
 			trigger: 'axis',
 			formatter: '{b}: {c} kg'
@@ -49,7 +49,7 @@
 	};
 
 	// Blood pressure trend chart
-	$: bpChartOptions: EChartsOption = {
+	const bpChartOptions: EChartsOption = {
 		tooltip: {
 			trigger: 'axis'
 		},

@@ -15,20 +15,23 @@
 	let chartElement: HTMLDivElement;
 	let chart: any;
 
-	onMount(async () => {
-		const echarts = await import('echarts');
-		chart = echarts.init(chartElement);
-		chart.setOption(options);
+	onMount(() => {
+		import('echarts').then((echarts) => {
+			chart = echarts.init(chartElement);
+			chart.setOption(options);
 
-		const handleResize = () => {
-			chart?.resize();
-		};
+			const handleResize = () => {
+				chart?.resize();
+			};
 
-		window.addEventListener('resize', handleResize);
+			window.addEventListener('resize', handleResize);
+		});
 
 		return () => {
-			window.removeEventListener('resize', handleResize);
-			chart?.dispose();
+			if (chart) {
+				window.removeEventListener('resize', () => chart?.resize());
+				chart.dispose();
+			}
 		};
 	});
 
