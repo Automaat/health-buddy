@@ -49,7 +49,7 @@
 <div class="lab-results-page">
 	<div class="header">
 		<h1>Lab Results</h1>
-		<Button on:click={openAddModal}>Add Lab Result</Button>
+		<Button onclick={openAddModal}>Add Lab Result</Button>
 	</div>
 
 	{#if sortedLabResults.length > 0}

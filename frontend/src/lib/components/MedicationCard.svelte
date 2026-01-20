@@ -6,8 +6,8 @@
 
 	export let medication: Medication;
 	export let onEdit: (med: Medication) => void;
-	export let onDelete: (id: string) => void;
-	export let onToggleActive: (id: string, isActive: boolean) => void;
+	export let onDelete: (id: number) => void;
+	export let onToggleActive: (id: number, isActive: boolean) => void;
 
 	$: isRefillSoon =
 		medication.refill_reminder_date &&
@@ -76,15 +76,15 @@
 		</div>
 
 		<div class="actions">
-			<Button variant="secondary" size="small" on:click={() => onEdit(medication)}>Edit</Button>
+			<Button variant="secondary" size="small" onclick={() => onEdit(medication)}>Edit</Button>
 			<Button
 				variant="secondary"
 				size="small"
-				on:click={() => onToggleActive(medication.id, medication.is_active)}
+				onclick={() => onToggleActive(medication.id, medication.is_active)}
 			>
 				{medication.is_active ? 'Deactivate' : 'Activate'}
 			</Button>
-			<Button variant="danger" size="small" on:click={() => onDelete(medication.id)}>Delete</Button>
+			<Button variant="danger" size="small" onclick={() => onDelete(medication.id)}>Delete</Button>
 		</div>
 	</div>
 </Card>

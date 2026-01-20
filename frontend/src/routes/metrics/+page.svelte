@@ -99,7 +99,7 @@
 <div class="metrics-page">
 	<div class="header">
 		<h1>Health Metrics</h1>
-		<Button on:click={openAddModal}>Add Metric</Button>
+		<Button onclick={openAddModal}>Add Metric</Button>
 	</div>
 
 	<Card>

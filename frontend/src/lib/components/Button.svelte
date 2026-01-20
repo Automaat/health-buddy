@@ -28,7 +28,6 @@
 	class="btn {variantClass} {sizeClass} {className}"
 	{onclick}
 	{disabled}
-	{...$$restProps}
 >
 	{#if children}
 		{@render children()}

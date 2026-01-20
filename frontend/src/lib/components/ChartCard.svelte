@@ -3,10 +3,14 @@
 	import Card from './Card.svelte';
 	import type { EChartsOption } from 'echarts';
 
-	export let title: string;
-	export let options: EChartsOption;
-	export let height = '300px';
-	export let variant: 'default' | 'blue' | 'green' | 'yellow' | 'red' | 'teal' = 'default';
+	interface Props {
+		title: string;
+		options: EChartsOption;
+		height?: string;
+		variant?: 'default' | 'blue' | 'green' | 'yellow' | 'red' | 'teal';
+	}
+
+	let { title, options, height = '300px', variant = 'default' }: Props = $props();
 
 	let chartElement: HTMLDivElement;
 	let chart: any;

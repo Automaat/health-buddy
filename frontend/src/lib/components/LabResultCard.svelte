@@ -72,7 +72,7 @@
 				{/if}
 
 				<div class="actions">
-					<Button variant="danger" size="small" on:click={() => onDelete(labResult.id)}>
+					<Button variant="danger" size="small" onclick={() => onDelete(labResult.id)}>
 						Delete
 					</Button>
 				</div>

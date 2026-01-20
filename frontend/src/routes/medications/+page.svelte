@@ -31,10 +31,10 @@
 		invalidateAll();
 	}
 
-	async function handleDelete(id: string) {
+	async function handleDelete(id: number) {
 		if (confirm('Are you sure you want to delete this medication?')) {
 			const formData = new FormData();
-			formData.append('id', id);
+			formData.append('id', id.toString());
 
 			await fetch('?/delete', {
 				method: 'POST',
@@ -45,15 +45,15 @@
 		}
 	}
 
-	async function handleToggleActive(id: string, isActive: boolean) {
+	async function handleToggleActive(id: number, isActive: boolean) {
 		const formData = new FormData();
-		formData.append('id', id);
+		formData.append('id', id.toString());
 		formData.append('is_active', isActive.toString());
 
 		await fetch('?/toggleActive', {
 			method: 'POST',
 			body: formData
-		});
+			});
 
 		invalidateAll();
 	}
@@ -66,7 +66,7 @@
 <div class="medications-page">
 	<div class="header">
 		<h1>Medications</h1>
-		<Button on:click={openAddModal}>Add Medication</Button>
+		<Button onclick={openAddModal}>Add Medication</Button>
 	</div>
 
 	{#if medications.length > 0}

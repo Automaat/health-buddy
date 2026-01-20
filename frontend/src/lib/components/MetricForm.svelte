@@ -108,7 +108,7 @@
 	</div>
 
 	<div class="form-actions">
-		<Button type="button" variant="secondary" on:click={onClose}>Cancel</Button>
+		<Button type="button" variant="secondary" onclick={onClose}>Cancel</Button>
 		<Button type="submit" variant="primary">{isEdit ? 'Update' : 'Add'} Metric</Button>
 	</div>
 </form>
