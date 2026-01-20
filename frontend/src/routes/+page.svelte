@@ -260,7 +260,6 @@
 	}
 
 	.medication-list,
-	.appointment-list,
 	.goal-list,
 	.lab-list {
 		margin-top: var(--size-2);
@@ -270,7 +269,6 @@
 	}
 
 	.medication-list li,
-	.appointment-list li,
 	.goal-list li,
 	.lab-list li {
 		margin-bottom: var(--size-1);
