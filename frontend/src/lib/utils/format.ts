@@ -45,6 +45,12 @@ export function calculateBMI(weight: number, heightCm: number): number {
 
 export function formatGoalProgress(current: number, target: number, start: number): string {
 	const totalChange = target - start;
+
+	// Handle edge case: goal already at target
+	if (totalChange === 0) {
+		return '100%';
+	}
+
 	const currentChange = current - start;
 	const progress = (currentChange / totalChange) * 100;
 	return `${Math.round(progress)}%`;
