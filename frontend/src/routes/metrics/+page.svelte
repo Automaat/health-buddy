@@ -1,10 +1,7 @@
 <script lang="ts">
 	import { goto, invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
-	import Card from '$lib/components/Card.svelte';
-	import Button from '$lib/components/Button.svelte';
-	import Select from '$lib/components/Select.svelte';
-	import Modal from '$lib/components/Modal.svelte';
+	import { Card, CardHeader, CardTitle, CardContent, Button, Select, Modal } from '@mskalski/home-ui';
 	import MetricForm from '$lib/components/MetricForm.svelte';
 	import ChartCard from '$lib/components/ChartCard.svelte';
 	import { METRIC_TYPES, METRIC_TYPE_LABELS } from '$lib/constants';
@@ -111,22 +108,24 @@
 <div class="metrics-page">
 	<div class="header">
 		<h1>Health Metrics</h1>
-		<Button onclick={openAddModal}>Add Metric</Button>
+		<Button on:click={openAddModal}>Add Metric</Button>
 	</div>
 
 	<Card>
-		<div class="filters">
-			<div class="filter-group">
-				<label for="metric-type">Metric Type</label>
-				<Select
-					id="metric-type"
-					name="metric_type"
-					options={metricTypeOptions}
-					value={selectedType}
-					onchange={handleMetricTypeChange}
-				/>
+		<CardContent>
+			<div class="filters">
+				<div class="filter-group">
+					<label for="metric-type">Metric Type</label>
+					<Select
+						id="metric-type"
+						name="metric_type"
+						options={metricTypeOptions}
+						value={selectedType}
+						on:change={handleMetricTypeChange}
+					/>
+				</div>
 			</div>
-		</div>
+		</CardContent>
 	</Card>
 
 	{#if metrics.length > 0}
@@ -138,9 +137,12 @@
 		/>
 
 		<Card>
-			<h2>All Readings</h2>
-			<div class="table-wrapper">
-				<table>
+			<CardHeader>
+				<CardTitle>All Readings</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<div class="table-wrapper">
+					<table>
 					<thead>
 						<tr>
 							<th>Date & Time</th>
@@ -170,12 +172,15 @@
 							</tr>
 						{/each}
 					</tbody>
-				</table>
-			</div>
+					</table>
+				</div>
+			</CardContent>
 		</Card>
 	{:else}
 		<Card>
-			<p class="empty-state">No metrics recorded for {METRIC_TYPE_LABELS[selectedType]} yet.</p>
+			<CardContent>
+				<p class="empty-state">No metrics recorded for {METRIC_TYPE_LABELS[selectedType]} yet.</p>
+			</CardContent>
 		</Card>
 	{/if}
 </div>

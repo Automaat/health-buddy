@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Card from '$lib/components/Card.svelte';
+	import { Card, CardHeader, CardTitle, CardContent } from '@mskalski/home-ui';
 	import MetricCard from '$lib/components/MetricCard.svelte';
 	import ChartCard from '$lib/components/ChartCard.svelte';
 	import { METRIC_TYPES } from '$lib/constants';
@@ -88,9 +88,13 @@
 	<p class="subtitle">Your personal health tracking companion</p>
 
 	<div class="dashboard-grid">
-		<Card variant="blue">
-			<h2>📊 Dashboard</h2>
-			<p>Track your health metrics, medications, and appointments all in one place.</p>
+		<Card>
+			<CardHeader>
+				<CardTitle>📊 Dashboard</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<p>Track your health metrics, medications, and appointments all in one place.</p>
+			</CardContent>
 		</Card>
 
 		{#if bloodPressureSystolic && bloodPressureDiastolic}
@@ -102,9 +106,13 @@
 				trend="stable"
 			/>
 		{:else}
-			<Card variant="blue">
-				<h3>Blood Pressure</h3>
-				<p class="text-secondary">No readings yet</p>
+			<Card>
+				<CardHeader>
+					<CardTitle>Blood Pressure</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<p class="text-secondary">No readings yet</p>
+				</CardContent>
 			</Card>
 		{/if}
 
@@ -117,9 +125,13 @@
 				trend="stable"
 			/>
 		{:else}
-			<Card variant="green">
-				<h3>Heart Rate</h3>
-				<p class="text-secondary">No readings yet</p>
+			<Card>
+				<CardHeader>
+					<CardTitle>Heart Rate</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<p class="text-secondary">No readings yet</p>
+				</CardContent>
 			</Card>
 		{/if}
 
@@ -132,59 +144,75 @@
 				trend="down"
 			/>
 		{:else}
-			<Card variant="teal">
-				<h3>Weight</h3>
-				<p class="text-secondary">No readings yet</p>
+			<Card>
+				<CardHeader>
+					<CardTitle>Weight</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<p class="text-secondary">No readings yet</p>
+				</CardContent>
 			</Card>
 		{/if}
 
-		<Card variant="teal">
-			<h3>💊 Active Medications</h3>
-			<p class="metric-value">{dashboardData.active_medications_count}</p>
-			{#if dashboardData.active_medications_count === 0}
-				<p class="text-secondary">No medications tracked yet</p>
-			{:else}
-				<ul class="medication-list">
-					{#each dashboardData.active_medications as med}
-						<li>{med.name} - {med.dosage} {med.unit}</li>
-					{/each}
-				</ul>
-			{/if}
-		</Card>
-
-		<Card variant="green">
-			<h3>🎯 Health Goals</h3>
-			<p class="metric-value">{dashboardData.health_goals.length}</p>
-			{#if dashboardData.health_goals.length === 0}
-				<p class="text-secondary">Set your first health goal</p>
-			{:else}
-				<ul class="goal-list">
-					{#each dashboardData.health_goals as goal}
-						<li>
-							{goal.name}: {goal.current_value}/{goal.target_value}
-							{goal.target_unit}
-						</li>
-					{/each}
-				</ul>
-			{/if}
+		<Card>
+			<CardHeader>
+				<CardTitle>💊 Active Medications</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<p class="metric-value">{dashboardData.active_medications_count}</p>
+				{#if dashboardData.active_medications_count === 0}
+					<p class="text-secondary">No medications tracked yet</p>
+				{:else}
+					<ul class="medication-list">
+						{#each dashboardData.active_medications as med}
+							<li>{med.name} - {med.dosage} {med.unit}</li>
+						{/each}
+					</ul>
+				{/if}
+			</CardContent>
 		</Card>
 
 		<Card>
-			<h3>🔬 Recent Lab Results</h3>
-			{#if dashboardData.recent_lab_results.length === 0}
-				<p class="text-secondary">No lab results recorded yet</p>
-			{:else}
-				<ul class="lab-list">
-					{#each dashboardData.recent_lab_results as lab}
-						<li>
-							{formatDate(lab.test_date)} - {lab.lab_name}
-							{#if lab.values.some((v) => v.is_abnormal)}
-								<span class="abnormal-flag">⚠️ Abnormal values</span>
-							{/if}
-						</li>
-					{/each}
-				</ul>
-			{/if}
+			<CardHeader>
+				<CardTitle>🎯 Health Goals</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<p class="metric-value">{dashboardData.health_goals.length}</p>
+				{#if dashboardData.health_goals.length === 0}
+					<p class="text-secondary">Set your first health goal</p>
+				{:else}
+					<ul class="goal-list">
+						{#each dashboardData.health_goals as goal}
+							<li>
+								{goal.name}: {goal.current_value}/{goal.target_value}
+								{goal.target_unit}
+							</li>
+						{/each}
+					</ul>
+				{/if}
+			</CardContent>
+		</Card>
+
+		<Card>
+			<CardHeader>
+				<CardTitle>🔬 Recent Lab Results</CardTitle>
+			</CardHeader>
+			<CardContent>
+				{#if dashboardData.recent_lab_results.length === 0}
+					<p class="text-secondary">No lab results recorded yet</p>
+				{:else}
+					<ul class="lab-list">
+						{#each dashboardData.recent_lab_results as lab}
+							<li>
+								{formatDate(lab.test_date)} - {lab.lab_name}
+								{#if lab.values.some((v) => v.is_abnormal)}
+									<span class="abnormal-flag">⚠️ Abnormal values</span>
+								{/if}
+							</li>
+						{/each}
+					</ul>
+				{/if}
+			</CardContent>
 		</Card>
 	</div>
 
@@ -200,13 +228,17 @@
 
 	<div class="getting-started">
 		<Card>
-			<h2>Getting Started</h2>
-			<ul>
-				<li>Track your daily health metrics like blood pressure, weight, and heart rate</li>
-				<li>Manage your medications and supplements</li>
-				<li>Record lab results and monitor trends</li>
-				<li>Set and monitor health goals</li>
-			</ul>
+			<CardHeader>
+				<CardTitle>Getting Started</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<ul>
+					<li>Track your daily health metrics like blood pressure, weight, and heart rate</li>
+					<li>Manage your medications and supplements</li>
+					<li>Record lab results and monitor trends</li>
+					<li>Set and monitor health goals</li>
+				</ul>
+			</CardContent>
 		</Card>
 	</div>
 </div>

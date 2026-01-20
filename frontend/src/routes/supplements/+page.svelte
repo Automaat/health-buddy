@@ -1,11 +1,7 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
 	import { enhance } from '$app/forms';
-	import Button from '$lib/components/Button.svelte';
-	import Modal from '$lib/components/Modal.svelte';
-	import Card from '$lib/components/Card.svelte';
-	import Input from '$lib/components/Input.svelte';
-	import Select from '$lib/components/Select.svelte';
+	import { Button, Modal, Card, Input, Select } from '@mskalski/home-ui';
 	import { MEDICATION_FREQUENCIES } from '$lib/constants';
 	import type { PageData } from './$types';
 	import type { Supplement } from '$lib/types/supplement';
@@ -102,7 +98,7 @@
 <div class="supplements-page">
 	<div class="header">
 		<h1>Supplements</h1>
-		<Button onclick={openAddModal}>Add Supplement</Button>
+		<Button on:click={openAddModal}>Add Supplement</Button>
 	</div>
 
 	{#if supplements.length > 0}
@@ -159,17 +155,17 @@
 						</div>
 
 						<div class="actions">
-							<Button variant="secondary" size="small" onclick={() => openEditModal(supplement)}>
+							<Button variant="secondary" size="small" on:click={() => openEditModal(supplement)}>
 								Edit
 							</Button>
 							<Button
 								variant="secondary"
 								size="small"
-								onclick={() => handleToggleActive(supplement.id, supplement.is_active)}
+								on:click={() => handleToggleActive(supplement.id, supplement.is_active)}
 							>
 								{supplement.is_active ? 'Deactivate' : 'Activate'}
 							</Button>
-							<Button variant="danger" size="small" onclick={() => handleDelete(supplement.id)}>
+							<Button variant="danger" size="small" on:click={() => handleDelete(supplement.id)}>
 								Delete
 							</Button>
 						</div>
@@ -280,7 +276,7 @@
 		</div>
 
 		<div class="form-actions">
-			<Button type="button" variant="secondary" onclick={closeModal}>Cancel</Button>
+			<Button type="button" variant="secondary" on:click={closeModal}>Cancel</Button>
 			<Button type="submit" variant="primary">{editingSupplement ? 'Update' : 'Add'} Supplement</Button>
 		</div>
 	</form>

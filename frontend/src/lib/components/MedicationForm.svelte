@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Button from './Button.svelte';
-	import Input from './Input.svelte';
-	import Select from './Select.svelte';
+	import { Button, Input, Select } from '@mskalski/home-ui';
 	import { MEDICATION_FREQUENCIES } from '$lib/constants';
 	import type { Medication } from '$lib/types/medication';
 
@@ -116,7 +114,7 @@
 	</div>
 
 	<div class="form-actions">
-		<Button type="button" variant="secondary" onclick={onClose}>Cancel</Button>
+		<Button type="button" variant="secondary" on:click={onClose}>Cancel</Button>
 		<Button type="submit" variant="primary">{isEdit ? 'Update' : 'Add'} Medication</Button>
 	</div>
 </form>

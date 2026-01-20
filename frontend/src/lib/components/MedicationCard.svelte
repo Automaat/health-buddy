@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Card from './Card.svelte';
-	import Button from './Button.svelte';
+	import { Card, CardContent, Button } from '@mskalski/home-ui';
 	import { formatDate } from '$lib/utils/format';
 	import type { Medication } from '$lib/types/medication';
 
@@ -15,7 +14,8 @@
 </script>
 
 <Card variant="teal">
-	<div class="medication-card">
+	<CardContent>
+		<div class="medication-card">
 		<div class="header">
 			<h3>{medication.name}</h3>
 			<div class="badges">
@@ -76,17 +76,18 @@
 		</div>
 
 		<div class="actions">
-			<Button variant="secondary" size="small" onclick={() => onEdit(medication)}>Edit</Button>
+			<Button variant="secondary" size="small" on:click={() => onEdit(medication)}>Edit</Button>
 			<Button
 				variant="secondary"
 				size="small"
-				onclick={() => onToggleActive(medication.id, medication.is_active)}
+				on:click={() => onToggleActive(medication.id, medication.is_active)}
 			>
 				{medication.is_active ? 'Deactivate' : 'Activate'}
 			</Button>
-			<Button variant="danger" size="small" onclick={() => onDelete(medication.id)}>Delete</Button>
+			<Button variant="danger" size="small" on:click={() => onDelete(medication.id)}>Delete</Button>
 		</div>
-	</div>
+		</div>
+	</CardContent>
 </Card>
 
 <style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Card from './Card.svelte';
+	import { Card, CardContent } from '@mskalski/home-ui';
 	import { formatMetricValue, formatDateTime } from '$lib/utils/format';
 
 	interface Props {
@@ -28,18 +28,20 @@
 </script>
 
 <Card {variant} class={className}>
-	<div class="metric-card-content">
-		<h3 class="metric-title">{title}</h3>
-		<div class="metric-value">
-			{formatMetricValue(value, unit)}
-			{#if trendSymbol}
-				<span class="trend trend-{trend}">{trendSymbol}</span>
+	<CardContent>
+		<div class="metric-card-content">
+			<h3 class="metric-title">{title}</h3>
+			<div class="metric-value">
+				{formatMetricValue(value, unit)}
+				{#if trendSymbol}
+					<span class="trend trend-{trend}">{trendSymbol}</span>
+				{/if}
+			</div>
+			{#if measuredAt}
+				<p class="metric-time">{formatDateTime(measuredAt)}</p>
 			{/if}
 		</div>
-		{#if measuredAt}
-			<p class="metric-time">{formatDateTime(measuredAt)}</p>
-		{/if}
-	</div>
+	</CardContent>
 </Card>
 
 <style>
