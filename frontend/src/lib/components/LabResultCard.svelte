@@ -5,7 +5,7 @@
 	import type { LabResult } from '$lib/types/lab-result';
 
 	export let labResult: LabResult;
-	export let onDelete: (id: string) => void;
+	export let onDelete: (id: number) => void;
 
 	let expanded = false;
 
@@ -21,8 +21,8 @@
 		<div class="header" on:click={toggleExpanded} on:keydown={toggleExpanded} role="button" tabindex="0">
 			<div class="header-info">
 				<h3>{formatDate(labResult.test_date)} - {labResult.lab_name}</h3>
-				{#if labResult.ordered_by_doctor}
-					<p class="doctor">Ordered by: {labResult.ordered_by_doctor}</p>
+				{#if labResult.ordering_doctor}
+					<p class="doctor">Ordered by: {labResult.ordering_doctor}</p>
 				{/if}
 			</div>
 			<div class="header-actions">

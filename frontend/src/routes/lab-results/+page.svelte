@@ -22,10 +22,10 @@
 		invalidateAll();
 	}
 
-	async function handleDelete(id: string) {
+	async function handleDelete(id: number) {
 		if (confirm('Are you sure you want to delete this lab result?')) {
 			const formData = new FormData();
-			formData.append('id', id);
+			formData.append('id', id.toString());
 
 			await fetch('?/delete', {
 				method: 'POST',

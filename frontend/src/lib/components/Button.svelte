@@ -19,14 +19,14 @@
 		children
 	}: Props = $props();
 
-	const variantClass = variant !== 'default' ? `btn-${variant}` : '';
-	const sizeClass = size !== 'medium' ? `btn-${size}` : '';
+	$: variantClass = variant !== 'default' ? `btn-${variant}` : '';
+	$: sizeClass = size !== 'medium' ? `btn-${size}` : '';
 </script>
 
 <button
 	{type}
 	class="btn {variantClass} {sizeClass} {className}"
-	{onclick}
+	onclick={onclick}
 	{disabled}
 >
 	{#if children}

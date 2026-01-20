@@ -17,7 +17,7 @@
 
 	let testDate = new Date().toISOString().slice(0, 10);
 	let labName = '';
-	let orderedByDoctor = '';
+	let orderingDoctor = '';
 	let notes = '';
 
 	let values: TestValue[] = [
@@ -115,12 +115,12 @@
 		</div>
 
 		<div class="form-group">
-			<label for="ordered_by_doctor">Ordered By (Doctor)</label>
+			<label for="ordering_doctor">Ordered By (Doctor)</label>
 			<Input
-				id="ordered_by_doctor"
-				name="ordered_by_doctor"
+				id="ordering_doctor"
+				name="ordering_doctor"
 				type="text"
-				bind:value={orderedByDoctor}
+				bind:value={orderingDoctor}
 			/>
 		</div>
 	</div>

@@ -7,7 +7,7 @@
 
 	let { class: className = '', variant = 'default', children }: Props = $props();
 
-	const variantClass = variant !== 'default' ? `metric-card ${variant}` : '';
+	$: variantClass = variant !== 'default' ? `metric-card ${variant}` : '';
 </script>
 
 <div class="card {variantClass} {className}">

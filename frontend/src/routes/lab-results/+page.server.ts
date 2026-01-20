@@ -34,7 +34,7 @@ export const actions: Actions = {
 		const labResultData = {
 			test_date: data.get('test_date'),
 			lab_name: data.get('lab_name'),
-			ordered_by_doctor: data.get('ordered_by_doctor') || null,
+			ordering_doctor: data.get('ordering_doctor') || null,
 			notes: data.get('notes') || null,
 			owner: data.get('owner') || 'default',
 			values
@@ -50,7 +50,7 @@ export const actions: Actions = {
 
 	delete: async ({ request }) => {
 		const data = await request.formData();
-		const id = data.get('id');
+		const id = Number(data.get('id'));
 
 		try {
 			await del(`/api/lab-results/${id}`);

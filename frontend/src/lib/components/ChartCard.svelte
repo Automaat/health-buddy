@@ -11,21 +11,25 @@
 	let chartElement: HTMLDivElement;
 	let chart: any;
 
-	onMount(async () => {
-		const echarts = await import('echarts');
-		chart = echarts.init(chartElement);
-		chart.setOption(options);
+	onMount(() => {
+		const initChart = async () => {
+			const echarts = await import('echarts');
+			chart = echarts.init(chartElement);
+			chart.setOption(options);
 
-		const handleResize = () => {
-			chart?.resize();
+			const handleResize = () => {
+				chart?.resize();
+			};
+
+			window.addEventListener('resize', handleResize);
+
+			return () => {
+				window.removeEventListener('resize', handleResize);
+				chart?.dispose();
+			};
 		};
 
-		window.addEventListener('resize', handleResize);
-
-		return () => {
-			window.removeEventListener('resize', handleResize);
-			chart?.dispose();
-		};
+		return initChart();
 	});
 
 	$: if (chart && options) {
@@ -35,7 +39,7 @@
 
 <Card {variant}>
 	<h3>{title}</h3>
-	<div bind:this={chartElement} style="width: 100%; height: {height};" />
+	<div bind:this={chartElement} style="width: 100%; height: {height};"></div>
 </Card>
 
 <style>
