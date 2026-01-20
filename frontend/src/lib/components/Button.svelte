@@ -19,15 +19,16 @@
 		children
 	}: Props = $props();
 
-	$: variantClass = variant !== 'default' ? `btn-${variant}` : '';
-	$: sizeClass = size !== 'medium' ? `btn-${size}` : '';
+	const variantClass = $derived(variant !== 'default' ? `btn-${variant}` : '');
+	const sizeClass = $derived(size !== 'medium' ? `btn-${size}` : '');
 </script>
 
 <button
 	{type}
 	class="btn {variantClass} {sizeClass} {className}"
-	onclick={onclick}
+	{onclick}
 	{disabled}
+	{...$$restProps}
 >
 	{#if children}
 		{@render children()}

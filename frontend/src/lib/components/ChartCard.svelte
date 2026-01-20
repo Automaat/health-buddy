@@ -11,30 +11,28 @@
 	let chartElement: HTMLDivElement;
 	let chart: any;
 
-	onMount(() => {
-		const initChart = async () => {
-			const echarts = await import('echarts');
-			chart = echarts.init(chartElement);
-			chart.setOption(options);
+	onMount(async () => {
+		const echarts = await import('echarts');
+		chart = echarts.init(chartElement);
+		chart.setOption(options);
 
-			const handleResize = () => {
-				chart?.resize();
-			};
-
-			window.addEventListener('resize', handleResize);
-
-			return () => {
-				window.removeEventListener('resize', handleResize);
-				chart?.dispose();
-			};
+		const handleResize = () => {
+			chart?.resize();
 		};
 
-		return initChart();
+		window.addEventListener('resize', handleResize);
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+			chart?.dispose();
+		};
 	});
 
-	$: if (chart && options) {
-		chart.setOption(options);
-	}
+	$effect(() => {
+		if (chart && options) {
+			chart.setOption(options);
+		}
+	});
 </script>
 
 <Card {variant}>

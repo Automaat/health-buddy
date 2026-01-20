@@ -10,6 +10,7 @@ export interface Medication {
 	end_date?: string;
 	prescribing_doctor?: string;
 	refill_reminder_date?: string;
+	notes?: string;
 	is_active: boolean;
 	created_at: string;
 	updated_at: string;
@@ -26,6 +27,7 @@ export interface MedicationCreate {
 	end_date?: string;
 	prescribing_doctor?: string;
 	refill_reminder_date?: string;
+	notes?: string;
 }
 
 export interface MedicationUpdate {
@@ -38,5 +40,6 @@ export interface MedicationUpdate {
 	end_date?: string;
 	prescribing_doctor?: string;
 	refill_reminder_date?: string;
+	notes?: string;
 	is_active?: boolean;
 }
