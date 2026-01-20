@@ -23,7 +23,13 @@
 	}
 </script>
 
-<form method="POST" action={isEdit ? '?/update' : '?/create'} use:enhance>
+<form method="POST" action={isEdit ? '?/update' : '?/create'} use:enhance={() => {
+	return async ({ result }) => {
+		if (result.type === 'success') {
+			onClose();
+		}
+	};
+}}>
 	{#if isEdit}
 		<input type="hidden" name="id" value={medication?.id} />
 	{/if}

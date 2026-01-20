@@ -63,7 +63,13 @@
 		metric?.measured_at ? formatDateTimeForInput(metric.measured_at) : new Date().toISOString().slice(0, 16);
 </script>
 
-<form method="POST" action={isEdit ? '?/update' : '?/create'} use:enhance>
+<form method="POST" action={isEdit ? '?/update' : '?/create'} use:enhance={() => {
+	return async ({ result }) => {
+		if (result.type === 'success') {
+			onClose();
+		}
+	};
+}}>
 	{#if isEdit}
 		<input type="hidden" name="id" value={metric?.id} />
 	{/if}

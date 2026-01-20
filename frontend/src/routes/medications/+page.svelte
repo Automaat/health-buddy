@@ -33,29 +33,49 @@
 
 	async function handleDelete(id: number) {
 		if (confirm('Are you sure you want to delete this medication?')) {
-			const formData = new FormData();
-			formData.append('id', id.toString());
+			try {
+				const formData = new FormData();
+				formData.append('id', id.toString());
 
-			await fetch('?/delete', {
-				method: 'POST',
-				body: formData
-			});
+				const response = await fetch('?/delete', {
+					method: 'POST',
+					body: formData
+				});
 
-			invalidateAll();
+				if (!response.ok) {
+					alert('Failed to delete medication. Please try again.');
+					return;
+				}
+
+				invalidateAll();
+			} catch (error) {
+				console.error('Error deleting medication:', error);
+				alert('Failed to delete medication. Please try again.');
+			}
 		}
 	}
 
 	async function handleToggleActive(id: number, isActive: boolean) {
-		const formData = new FormData();
-		formData.append('id', id.toString());
-		formData.append('is_active', isActive.toString());
+		try {
+			const formData = new FormData();
+			formData.append('id', id.toString());
+			formData.append('is_active', isActive.toString());
 
-		await fetch('?/toggleActive', {
-			method: 'POST',
-			body: formData
+			const response = await fetch('?/toggleActive', {
+				method: 'POST',
+				body: formData
 			});
 
-		invalidateAll();
+			if (!response.ok) {
+				alert('Failed to toggle medication status. Please try again.');
+				return;
+			}
+
+			invalidateAll();
+		} catch (error) {
+			console.error('Error toggling medication status:', error);
+			alert('Failed to toggle medication status. Please try again.');
+		}
 	}
 </script>
 

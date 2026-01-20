@@ -24,15 +24,25 @@
 
 	async function handleDelete(id: number) {
 		if (confirm('Are you sure you want to delete this lab result?')) {
-			const formData = new FormData();
-			formData.append('id', id.toString());
+			try {
+				const formData = new FormData();
+				formData.append('id', id.toString());
 
-			await fetch('?/delete', {
-				method: 'POST',
-				body: formData
-			});
+				const response = await fetch('?/delete', {
+					method: 'POST',
+					body: formData
+				});
 
-			invalidateAll();
+				if (!response.ok) {
+					alert('Failed to delete lab result. Please try again.');
+					return;
+				}
+
+				invalidateAll();
+			} catch (error) {
+				console.error('Error deleting lab result:', error);
+				alert('Failed to delete lab result. Please try again.');
+			}
 		}
 	}
 

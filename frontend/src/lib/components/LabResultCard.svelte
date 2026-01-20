@@ -13,12 +13,19 @@
 		expanded = !expanded;
 	}
 
+	function handleHeaderKeydown(event: KeyboardEvent) {
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			toggleExpanded();
+		}
+	}
+
 	$: hasAbnormalValues = labResult.values.some((v) => v.is_abnormal);
 </script>
 
 <Card variant={hasAbnormalValues ? 'red' : 'default'}>
 	<div class="lab-result-card">
-		<div class="header" on:click={toggleExpanded} on:keydown={toggleExpanded} role="button" tabindex="0">
+		<div class="header" on:click={toggleExpanded} on:keydown={handleHeaderKeydown} role="button" tabindex="0">
 			<div class="header-info">
 				<h3>{formatDate(labResult.test_date)} - {labResult.lab_name}</h3>
 				{#if labResult.ordering_doctor}

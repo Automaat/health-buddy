@@ -80,15 +80,26 @@
 
 	async function handleDelete(id: number) {
 		if (confirm('Are you sure you want to delete this metric?')) {
-			const formData = new FormData();
-			formData.append('id', id.toString());
+			try {
+				const formData = new FormData();
+				formData.append('id', id.toString());
 
-			await fetch('?/delete', {
-				method: 'POST',
-				body: formData
-			});
+				const response = await fetch('?/delete', {
+					method: 'POST',
+					body: formData
+				});
 
-			invalidateAll();
+				if (!response.ok) {
+					console.error('Failed to delete metric');
+					alert('Failed to delete metric. Please try again.');
+					return;
+				}
+
+				invalidateAll();
+			} catch (error) {
+				console.error('Error deleting metric:', error);
+				alert('Failed to delete metric. Please try again.');
+			}
 		}
 	}
 </script>
@@ -148,10 +159,10 @@
 								<td>{metric.notes || '-'}</td>
 								<td>
 									<div class="actions">
-										<button class="action-btn edit" on:click={() => openEditModal(metric)}>
+										<button class="action-btn edit" on:click={() => openEditModal(metric)} aria-label={`Edit metric from ${formatDateTime(metric.measured_at)}`}>
 											Edit
 										</button>
-										<button class="action-btn delete" on:click={() => handleDelete(metric.id)}>
+										<button class="action-btn delete" on:click={() => handleDelete(metric.id)} aria-label={`Delete metric from ${formatDateTime(metric.measured_at)}`}>
 											Delete
 										</button>
 									</div>

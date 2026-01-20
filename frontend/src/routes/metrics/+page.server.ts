@@ -30,9 +30,15 @@ export const load: PageServerLoad = async ({ url }) => {
 export const actions: Actions = {
 	create: async ({ request }) => {
 		const data = await request.formData();
+		const value = parseFloat(data.get('value') as string);
+
+		if (isNaN(value)) {
+			return fail(400, { error: 'Invalid value: must be a number' });
+		}
+
 		const metricData = {
 			metric_type: data.get('metric_type'),
-			value: parseFloat(data.get('value') as string),
+			value,
 			unit: data.get('unit'),
 			measured_at: data.get('measured_at'),
 			notes: data.get('notes') || null,
@@ -42,7 +48,7 @@ export const actions: Actions = {
 		try {
 			await post('/api/health-metrics', metricData);
 			return { success: true };
-		} catch (error) {
+		} catch (_error) {
 			return fail(400, { error: 'Failed to create metric' });
 		}
 	},
@@ -50,9 +56,15 @@ export const actions: Actions = {
 	update: async ({ request }) => {
 		const data = await request.formData();
 		const id = data.get('id');
+		const value = parseFloat(data.get('value') as string);
+
+		if (isNaN(value)) {
+			return fail(400, { error: 'Invalid value: must be a number' });
+		}
+
 		const metricData = {
 			metric_type: data.get('metric_type'),
-			value: parseFloat(data.get('value') as string),
+			value,
 			unit: data.get('unit'),
 			measured_at: data.get('measured_at'),
 			notes: data.get('notes') || null
@@ -61,7 +73,7 @@ export const actions: Actions = {
 		try {
 			await put(`/api/health-metrics/${id}`, metricData);
 			return { success: true };
-		} catch (error) {
+		} catch (_error) {
 			return fail(400, { error: 'Failed to update metric' });
 		}
 	},
@@ -73,7 +85,7 @@ export const actions: Actions = {
 		try {
 			await del(`/api/health-metrics/${id}`);
 			return { success: true };
-		} catch (error) {
+		} catch (_error) {
 			return fail(400, { error: 'Failed to delete metric' });
 		}
 	}
