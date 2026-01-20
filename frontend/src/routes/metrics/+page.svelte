@@ -37,25 +37,25 @@
 	// Chart data
 	$: chartOptions = {
 		tooltip: {
-			trigger: 'axis',
+			trigger: 'axis' as const,
 			formatter: (params: any) => {
 				const point = params[0];
 				return `${point.name}<br/>${point.seriesName}: ${point.value} ${metrics[0]?.unit || ''}`;
 			}
 		},
 		xAxis: {
-			type: 'category',
+			type: 'category' as const,
 			data: metrics.map((m) => new Date(m.measured_at).toLocaleDateString())
 		},
 		yAxis: {
-			type: 'value',
+			type: 'value' as const,
 			name: metrics[0]?.unit || ''
 		},
 		series: [
 			{
 				name: METRIC_TYPE_LABELS[selectedType],
 				data: metrics.map((m) => m.value),
-				type: 'line',
+				type: 'line' as const,
 				smooth: true,
 				itemStyle: { color: '#5e81ac' }
 			}
