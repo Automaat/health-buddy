@@ -7,7 +7,7 @@ on:
     branches: [master, main]
 
 jobs:
-  test:
+  backend-test:
     runs-on: ubuntu-latest
 
     services:
@@ -59,3 +59,58 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: backend
           name: backend-coverage
+
+  frontend-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca777bd6ebf9582d0e8c169b41 # v4.2.2
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Run lint
+        working-directory: frontend
+        run: npm run lint
+
+      - name: Check types
+        working-directory: frontend
+        run: npm run check
+
+  frontend-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca777bd6ebf9582d0e8c169b41 # v4.2.2
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build
+        working-directory: frontend
+        run: npm run build
+
+      - name: Check for build output
+        working-directory: frontend
+        run: |
+          if [ ! -d "build" ]; then
+            echo "Build directory not found"
+            exit 1
+          fi
+          echo "Build successful"
