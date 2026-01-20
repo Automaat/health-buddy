@@ -60,7 +60,7 @@ def test_get_dashboard_data_with_medications():
         "/api/medications",
         json={
             "name": "Aspirin",
-            "dosage": 100.0,
+            "dosage": "100",
             "unit": "mg",
             "frequency": "Daily",
             "start_date": "2024-01-01",

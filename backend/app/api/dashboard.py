@@ -23,13 +23,13 @@ def get_dashboard_data(owner: str, db: Session = Depends(get_db)):
 
     active_medications = (
         db.query(Medication)
-        .filter(Medication.owner == owner, Medication.is_active)
+        .filter(Medication.owner == owner, Medication.is_active == True)
         .all()
     )
 
     active_supplements = (
         db.query(Supplement)
-        .filter(Supplement.owner == owner, Supplement.is_active)
+        .filter(Supplement.owner == owner, Supplement.is_active == True)
         .all()
     )
 
@@ -43,7 +43,7 @@ def get_dashboard_data(owner: str, db: Session = Depends(get_db)):
 
     active_goals = (
         db.query(HealthGoal)
-        .filter(HealthGoal.owner == owner, ~HealthGoal.is_completed)
+        .filter(HealthGoal.owner == owner, HealthGoal.is_completed == False)
         .all()
     )
 
