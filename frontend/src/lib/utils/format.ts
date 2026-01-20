@@ -18,7 +18,10 @@ export function formatDateTime(dateString: string): string {
 	});
 }
 
-export function formatMetricValue(value: number, unit: string): string {
+export function formatMetricValue(value: number | string, unit: string): string {
+	if (typeof value === 'string') {
+		return `${value} ${unit}`;
+	}
 	return `${value.toFixed(1)} ${unit}`;
 }
 

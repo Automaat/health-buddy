@@ -38,10 +38,10 @@
 		invalidateAll();
 	}
 
-	async function handleDelete(id: string) {
+	async function handleDelete(id: number) {
 		if (confirm('Are you sure you want to delete this supplement?')) {
 			const formData = new FormData();
-			formData.append('id', id);
+			formData.append('id', id.toString());
 
 			await fetch('?/delete', {
 				method: 'POST',
@@ -52,9 +52,9 @@
 		}
 	}
 
-	async function handleToggleActive(id: string, isActive: boolean) {
+	async function handleToggleActive(id: number, isActive: boolean) {
 		const formData = new FormData();
-		formData.append('id', id);
+		formData.append('id', id.toString());
 		formData.append('is_active', isActive.toString());
 
 		await fetch('?/toggleActive', {
@@ -145,7 +145,7 @@
 							<Button
 								variant="secondary"
 								size="small"
-								on:click={() => handleToggleActive(supplement.id, supplement.is_active)}
+								onclick={() => handleToggleActive(supplement.id, supplement.is_active)}
 							>
 								{supplement.is_active ? 'Deactivate' : 'Activate'}
 							</Button>

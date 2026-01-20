@@ -27,14 +27,15 @@
 	}));
 
 	// Handle metric type change
-	async function handleMetricTypeChange(newType: string) {
+	async function handleMetricTypeChange(event: Event) {
+		const target = event.target as HTMLSelectElement;
 		const url = new URL($page.url);
-		url.searchParams.set('type', newType);
+		url.searchParams.set('type', target.value);
 		await goto(url.toString());
 	}
 
 	// Chart data
-	$: chartOptions: EChartsOption = {
+	$: chartOptions = {
 		tooltip: {
 			trigger: 'axis',
 			formatter: (params: any) => {
@@ -77,10 +78,10 @@
 		invalidateAll();
 	}
 
-	async function handleDelete(id: string) {
+	async function handleDelete(id: number) {
 		if (confirm('Are you sure you want to delete this metric?')) {
 			const formData = new FormData();
-			formData.append('id', id);
+			formData.append('id', id.toString());
 
 			await fetch('?/delete', {
 				method: 'POST',
@@ -111,7 +112,7 @@
 					name="metric_type"
 					options={metricTypeOptions}
 					value={selectedType}
-					on:change={(e) => handleMetricTypeChange(e.detail)}
+					onchange={handleMetricTypeChange}
 				/>
 			</div>
 		</div>
