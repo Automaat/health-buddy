@@ -172,6 +172,35 @@ button {
 	opacity: 0.9;
 }
 
+.btn-secondary {
+	background-color: var(--color-bg-secondary);
+	color: var(--color-text);
+	border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+	background-color: var(--color-bg-tertiary);
+}
+
+.btn-danger {
+	background-color: var(--color-error);
+	color: white;
+}
+
+.btn-danger:hover {
+	opacity: 0.9;
+}
+
+.btn-small {
+	padding: var(--size-1) var(--size-3);
+	font-size: 0.875rem;
+}
+
+.btn-large {
+	padding: var(--size-3) var(--size-5);
+	font-size: 1.125rem;
+}
+
 /* Input Styles */
 .input {
 	width: 100%;

@@ -1,5 +1,6 @@
 <script lang="ts">
 	interface Props {
+		id?: string;
 		name: string;
 		value?: string | number;
 		options: Array<{ label: string; value: string | number }>;
@@ -11,6 +12,7 @@
 	}
 
 	let {
+		id,
 		name,
 		value = $bindable(),
 		options,
@@ -23,6 +25,7 @@
 </script>
 
 <select
+	{id}
 	{name}
 	bind:value
 	{required}

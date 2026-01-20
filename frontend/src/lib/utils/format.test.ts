@@ -36,6 +36,10 @@ describe('format utilities', () => {
 		it('formats integer correctly', () => {
 			expect(formatMetricValue(100, 'bpm')).toBe('100.0 bpm');
 		});
+
+		it('formats string value without decimal conversion', () => {
+			expect(formatMetricValue('120/80', 'mmHg')).toBe('120/80 mmHg');
+		});
 	});
 
 	describe('formatBloodPressure', () => {

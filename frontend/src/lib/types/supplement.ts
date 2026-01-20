@@ -9,6 +9,7 @@ export interface Supplement {
 	start_date: string;
 	end_date?: string;
 	brand?: string;
+	notes?: string;
 	is_active: boolean;
 	created_at: string;
 	updated_at: string;
@@ -24,6 +25,7 @@ export interface SupplementCreate {
 	start_date: string;
 	end_date?: string;
 	brand?: string;
+	notes?: string;
 }
 
 export interface SupplementUpdate {
@@ -35,5 +37,6 @@ export interface SupplementUpdate {
 	start_date?: string;
 	end_date?: string;
 	brand?: string;
+	notes?: string;
 	is_active?: boolean;
 }
