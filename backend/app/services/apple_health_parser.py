@@ -1,11 +1,16 @@
 """Apple Health data parser for XML exports and Health Auto Export JSON."""
 
+import logging
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
+import defusedxml.ElementTree as DefusedET
+
 from app.schemas.health_metric import HealthMetricCreate
+
+logger = logging.getLogger(__name__)
 
 AGGREGATE_METRICS = {"heart_rate", "steps", "hrv", "respiratory_rate", "walking_heart_rate"}
 SUM_METRICS = {"steps"}
@@ -28,6 +33,8 @@ APPLE_HEALTH_TYPE_MAP: dict[str, tuple[str, str]] = {
     "HKQuantityTypeIdentifierWalkingHeartRateAverage": ("walking_heart_rate", "bpm"),
 }
 
+# Note: sleep_analysis only supported via webhook (Health Auto Export JSON), not XML import.
+# Apple Health XML uses HKCategoryTypeIdentifierSleepAnalysis with different data format.
 HEALTH_AUTO_EXPORT_TYPE_MAP: dict[str, tuple[str, str]] = {
     "heart_rate": ("heart_rate", "bpm"),
     "weight_body_mass": ("weight", "kg"),
@@ -68,7 +75,7 @@ class AppleHealthParser:
         )
         cutoff = datetime.now(UTC) - timedelta(days=aggregate_days) if aggregate_days > 0 else None
 
-        root = ET.fromstring(content)
+        root = DefusedET.fromstring(content)
 
         for record in root.iter("Record"):
             metric = self._parse_xml_record(record, owner)
@@ -158,9 +165,9 @@ class AppleHealthParser:
         """Parse Health Auto Export JSON payload."""
         metrics: list[HealthMetricCreate] = []
 
-        data_section = data.get("data", data)
-        if isinstance(data_section, dict):
-            metrics_data = data_section.get("metrics", [])
+        metrics_container = data.get("data", data)
+        if isinstance(metrics_container, dict):
+            metrics_data = metrics_container.get("metrics", [])
         else:
             metrics_data = []
 
@@ -221,22 +228,30 @@ class AppleHealthParser:
         return results
 
     def _parse_apple_date(self, date_str: str) -> datetime | None:
-        """Parse Apple Health XML date format."""
+        """Parse Apple Health XML date format. Rejects future dates."""
         formats = [
             "%Y-%m-%d %H:%M:%S %z",
             "%Y-%m-%d %H:%M:%S",
         ]
         for fmt in formats:
             try:
-                return datetime.strptime(date_str, fmt)
+                parsed = datetime.strptime(date_str, fmt)
+                if parsed.replace(tzinfo=UTC) > datetime.now(UTC):
+                    logger.warning("Rejecting future date: %s", date_str)
+                    return None
+                return parsed
             except ValueError:
                 continue
         return None
 
     def _parse_iso_date(self, date_str: str) -> datetime | None:
-        """Parse ISO format date string."""
+        """Parse ISO format date string. Rejects future dates."""
         try:
-            return datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+            parsed = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+            if parsed.replace(tzinfo=UTC) > datetime.now(UTC):
+                logger.warning("Rejecting future date: %s", date_str)
+                return None
+            return parsed
         except ValueError:
             return None
 

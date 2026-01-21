@@ -7,7 +7,18 @@
 	let isUploading = $state(false);
 	let result = $state<ImportResult | null>(null);
 	let error = $state<string | null>(null);
+	let copySuccess = $state(false);
 	let fileInput: HTMLInputElement;
+
+	async function copyWebhookUrl() {
+		try {
+			await navigator.clipboard.writeText(`${API_BASE_URL}/api/import/apple-health/webhook`);
+			copySuccess = true;
+			setTimeout(() => (copySuccess = false), 2000);
+		} catch {
+			error = 'Failed to copy to clipboard. Please copy manually.';
+		}
+	}
 
 	function handleDragOver(e: DragEvent) {
 		e.preventDefault();
@@ -53,7 +64,8 @@
 		try {
 			const response = await fetch(`${API_BASE_URL}/api/import/apple-health`, {
 				method: 'POST',
-				body: formData
+				body: formData,
+				credentials: 'include'
 			});
 
 			if (!response.ok) {
@@ -127,7 +139,7 @@
 					</div>
 				{:else}
 					<div class="dropzone-content">
-						<span class="icon">📁</span>
+						<span class="icon" role="img" aria-label="File icon">📁</span>
 						<p>Drag & drop your <code>export.xml</code> here</p>
 						<p class="or">or</p>
 						<Button>Select File</Button>
@@ -183,11 +195,8 @@
 				</ol>
 				<div class="webhook-url">
 					<code>{API_BASE_URL}/api/import/apple-health/webhook</code>
-					<Button
-						variant="secondary"
-						on:click={() => navigator.clipboard.writeText(`${API_BASE_URL}/api/import/apple-health/webhook`)}
-					>
-						Copy
+					<Button variant="secondary" on:click={copyWebhookUrl}>
+						{copySuccess ? 'Copied!' : 'Copy'}
 					</Button>
 				</div>
 				<ol start={5}>

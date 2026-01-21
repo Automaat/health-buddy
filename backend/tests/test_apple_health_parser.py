@@ -22,7 +22,7 @@ class TestParseXml:
                     startDate="2024-01-15 10:00:00 +0000" />
         </HealthData>"""
 
-        metrics = parser.parse_xml(xml_content, "test_user")
+        metrics = parser.parse_xml(xml_content, "test_user", aggregate_days=0)
 
         assert len(metrics) == 1
         assert metrics[0].metric_type == "heart_rate"
@@ -39,7 +39,7 @@ class TestParseXml:
                     startDate="2024-01-15 10:00:00 +0000" />
         </HealthData>"""
 
-        metrics = parser.parse_xml(xml_content, "test_user")
+        metrics = parser.parse_xml(xml_content, "test_user", aggregate_days=0)
 
         assert len(metrics) == 1
         assert metrics[0].metric_type == "weight"
@@ -59,7 +59,7 @@ class TestParseXml:
                     startDate="2024-01-15 10:00:00 +0000" />
         </HealthData>"""
 
-        metrics = parser.parse_xml(xml_content, "test_user")
+        metrics = parser.parse_xml(xml_content, "test_user", aggregate_days=0)
 
         assert len(metrics) == 2
         systolic = next(m for m in metrics if m.metric_type == "blood_pressure_systolic")
@@ -77,7 +77,7 @@ class TestParseXml:
                     startDate="2024-01-15 10:00:00 +0000" />
         </HealthData>"""
 
-        metrics = parser.parse_xml(xml_content, "test_user")
+        metrics = parser.parse_xml(xml_content, "test_user", aggregate_days=0)
         assert len(metrics) == 0
 
     def test_parse_multiple_records(self, parser: AppleHealthParser):
@@ -97,7 +97,7 @@ class TestParseXml:
                     startDate="2024-01-15 12:00:00 +0000" />
         </HealthData>"""
 
-        metrics = parser.parse_xml(xml_content, "test_user")
+        metrics = parser.parse_xml(xml_content, "test_user", aggregate_days=0)
 
         assert len(metrics) == 3
         heart_rate_metrics = [m for m in metrics if m.metric_type == "heart_rate"]
@@ -115,7 +115,7 @@ class TestParseXml:
                     startDate="2024-01-15 10:00:00 +0000" />
         </HealthData>"""
 
-        metrics = parser.parse_xml(xml_content, "test_user")
+        metrics = parser.parse_xml(xml_content, "test_user", aggregate_days=0)
         assert len(metrics) == 0
 
 

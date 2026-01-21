@@ -1,5 +1,7 @@
 """API endpoints for importing Apple Health data."""
 
+import logging
+
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from sqlalchemy.orm import Session
 
@@ -8,6 +10,8 @@ from app.models import HealthMetric
 from app.schemas import HealthAutoExportPayload, HealthMetricCreate, ImportResult
 from app.services.apple_health_parser import apple_health_parser
 from app.services.crud import health_metric
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/import", tags=["import"])
 
@@ -45,7 +49,6 @@ async def import_apple_health_xml(
 def import_apple_health_webhook(
     payload: HealthAutoExportPayload,
     owner: str = Query(DEFAULT_OWNER),
-    key: str | None = Query(None),
     db: Session = Depends(get_db),
 ) -> ImportResult:
     """Webhook endpoint for Health Auto Export app."""
@@ -55,7 +58,10 @@ def import_apple_health_webhook(
     elif payload.metrics:
         data = {"data": {"metrics": payload.metrics}}
     else:
-        raise HTTPException(status_code=400, detail="No metrics data in payload")
+        raise HTTPException(
+            status_code=400,
+            detail="No metrics data in payload. Expected 'data' or 'metrics' field.",
+        )
 
     metrics = apple_health_parser.parse_auto_export_json(data, owner)
     return _import_metrics(db, metrics, owner)
@@ -94,6 +100,7 @@ def _import_metrics(
                 health_metric.create(db=db, obj_in=metric)
                 imported += 1
         except Exception:
+            logger.exception("Failed to import metric: %s", metric.metric_type)
             errors += 1
             db.rollback()
 

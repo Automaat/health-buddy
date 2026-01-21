@@ -12,6 +12,7 @@ dependencies = [
     "pydantic>=2.9.0",
     "pydantic-settings>=2.5.0",
     "python-multipart>=0.0.9",
+    "defusedxml>=0.7.1",
 ]
 
 [dependency-groups]
