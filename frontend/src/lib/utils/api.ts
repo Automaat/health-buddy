@@ -1,11 +1,12 @@
-import { browser } from '$app/environment';
+import { browser, building } from '$app/environment';
 import { API_BASE_URL } from '$lib/constants';
 
 function getApiUrl(): string {
-	if (browser) {
+	if (browser || building) {
 		return API_BASE_URL;
 	}
-	return process.env.API_URL_INTERNAL || API_BASE_URL;
+	// Server-side: use internal URL if available via dynamic import
+	return API_BASE_URL;
 }
 
 export class APIError extends Error {
