@@ -1,10 +1,14 @@
 """Apple Health data parser for XML exports and Health Auto Export JSON."""
 
 import xml.etree.ElementTree as ET
-from datetime import datetime
+from collections import defaultdict
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from app.schemas.health_metric import HealthMetricCreate
+
+AGGREGATE_METRICS = {"heart_rate", "steps", "hrv", "respiratory_rate", "walking_heart_rate"}
+SUM_METRICS = {"steps"}
 
 APPLE_HEALTH_TYPE_MAP: dict[str, tuple[str, str]] = {
     "HKQuantityTypeIdentifierHeartRate": ("heart_rate", "bpm"),
@@ -47,15 +51,67 @@ HEALTH_AUTO_EXPORT_TYPE_MAP: dict[str, tuple[str, str]] = {
 class AppleHealthParser:
     """Parser for Apple Health data from various sources."""
 
-    def parse_xml(self, content: bytes, owner: str) -> list[HealthMetricCreate]:
-        """Parse Apple Health export XML file."""
+    def parse_xml(
+        self, content: bytes, owner: str, aggregate_days: int = 30
+    ) -> list[HealthMetricCreate]:
+        """Parse Apple Health export XML file with aggregation for old data.
+
+        Args:
+            content: XML file content
+            owner: Owner identifier
+            aggregate_days: Data older than this many days gets aggregated to daily values.
+                           Set to 0 to disable aggregation.
+        """
         metrics: list[HealthMetricCreate] = []
+        to_aggregate: dict[str, dict[str, list[float]]] = defaultdict(
+            lambda: defaultdict(list)
+        )
+        cutoff = datetime.now(UTC) - timedelta(days=aggregate_days) if aggregate_days > 0 else None
+
         root = ET.fromstring(content)
 
         for record in root.iter("Record"):
             metric = self._parse_xml_record(record, owner)
-            if metric:
+            if not metric:
+                continue
+
+            if (
+                cutoff
+                and metric.metric_type in AGGREGATE_METRICS
+                and metric.measured_at.replace(tzinfo=UTC) < cutoff
+            ):
+                day_key = metric.measured_at.strftime("%Y-%m-%d")
+                to_aggregate[metric.metric_type][day_key].append(metric.value)
+            else:
                 metrics.append(metric)
+
+        for metric_type, daily_values in to_aggregate.items():
+            mapping = next(
+                (v for k, v in APPLE_HEALTH_TYPE_MAP.items() if v[0] == metric_type), None
+            )
+            if not mapping:
+                continue
+            _, unit = mapping
+
+            for day_str, values in daily_values.items():
+                if metric_type in SUM_METRICS:
+                    agg_value = round(sum(values), 2)
+                else:
+                    agg_value = round(sum(values) / len(values), 2)
+
+                measured_at = datetime.strptime(day_str, "%Y-%m-%d").replace(
+                    hour=12, tzinfo=UTC
+                )
+                metrics.append(
+                    HealthMetricCreate(
+                        metric_type=metric_type,
+                        value=agg_value,
+                        unit=unit,
+                        measured_at=measured_at,
+                        owner=owner,
+                        source="apple_health_import",
+                    )
+                )
 
         return metrics
 

@@ -18,9 +18,14 @@ DEFAULT_OWNER = "default_user"
 async def import_apple_health_xml(
     file: UploadFile = File(...),
     owner: str = Query(DEFAULT_OWNER),
+    aggregate_days: int = Query(30, description="Aggregate old data to daily values. 0=disable"),
     db: Session = Depends(get_db),
 ) -> ImportResult:
-    """Import Apple Health export XML file."""
+    """Import Apple Health export XML file.
+
+    High-frequency metrics (heart_rate, steps, hrv) older than aggregate_days
+    are aggregated to daily averages/sums to reduce storage.
+    """
     if not file.filename or not file.filename.endswith(".xml"):
         raise HTTPException(status_code=400, detail="File must be an XML file")
 
@@ -29,7 +34,7 @@ async def import_apple_health_xml(
         raise HTTPException(status_code=400, detail="File is empty")
 
     try:
-        metrics = apple_health_parser.parse_xml(content, owner)
+        metrics = apple_health_parser.parse_xml(content, owner, aggregate_days)
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to parse XML: {e}") from e
 
