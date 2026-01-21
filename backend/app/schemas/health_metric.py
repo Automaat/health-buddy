@@ -1,6 +1,9 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel, Field
+
+SourceType = Literal["manual", "apple_health_import", "apple_health_webhook"]
 
 
 class HealthMetricBase(BaseModel):
@@ -14,7 +17,7 @@ class HealthMetricBase(BaseModel):
 
 
 class HealthMetricCreate(HealthMetricBase):
-    pass
+    source: SourceType = "manual"
 
 
 class HealthMetricUpdate(BaseModel):
@@ -29,6 +32,7 @@ class HealthMetricUpdate(BaseModel):
 
 class HealthMetricResponse(HealthMetricBase):
     id: int
+    source: SourceType
     created_at: datetime
     updated_at: datetime
 

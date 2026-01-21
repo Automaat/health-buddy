@@ -8,7 +8,7 @@ from app.services.crud import health_metric
 router = APIRouter(prefix="/health-metrics", tags=["health-metrics"])
 
 
-@router.post("/", response_model=HealthMetricResponse)
+@router.post("", response_model=HealthMetricResponse)
 def create_health_metric(metric: HealthMetricCreate, db: Session = Depends(get_db)):
     return health_metric.create(db=db, obj_in=metric)
 
@@ -21,11 +21,17 @@ def get_health_metric(metric_id: int, db: Session = Depends(get_db)):
     return db_metric
 
 
-@router.get("/", response_model=list[HealthMetricResponse])
+@router.get("", response_model=list[HealthMetricResponse])
 def list_health_metrics(
-    skip: int = 0, limit: int = 100, owner: str | None = None, db: Session = Depends(get_db)
+    skip: int = 0,
+    limit: int = 100,
+    owner: str | None = None,
+    metric_type: str | None = None,
+    db: Session = Depends(get_db),
 ):
-    return health_metric.get_multi(db=db, skip=skip, limit=limit, owner=owner)
+    return health_metric.get_multi(
+        db=db, skip=skip, limit=limit, owner=owner, metric_type=metric_type
+    )
 
 
 @router.patch("/{metric_id}", response_model=HealthMetricResponse)

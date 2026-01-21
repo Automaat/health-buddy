@@ -18,11 +18,20 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db.query(self.model).filter(self.model.id == id).first()
 
     def get_multi(
-        self, db: Session, skip: int = 0, limit: int = 100, owner: str | None = None
+        self,
+        db: Session,
+        skip: int = 0,
+        limit: int = 100,
+        owner: str | None = None,
+        metric_type: str | None = None,
     ) -> list[ModelType]:
         query = db.query(self.model)
         if owner and hasattr(self.model, "owner"):
             query = query.filter(self.model.owner == owner)
+        if metric_type and hasattr(self.model, "metric_type"):
+            query = query.filter(self.model.metric_type == metric_type)
+        if hasattr(self.model, "measured_at"):
+            query = query.order_by(self.model.measured_at.desc())
         return query.offset(skip).limit(limit).all()
 
     def create(self, db: Session, obj_in: CreateSchemaType) -> ModelType:
