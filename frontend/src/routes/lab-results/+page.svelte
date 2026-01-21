@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
-	import Button from '$lib/components/Button.svelte';
-	import Modal from '$lib/components/Modal.svelte';
+	import { Button, Modal, Card } from '@mskalski/home-ui';
 	import LabResultCard from '$lib/components/LabResultCard.svelte';
 	import LabResultForm from '$lib/components/LabResultForm.svelte';
-	import Card from '$lib/components/Card.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -59,7 +57,7 @@
 <div class="lab-results-page">
 	<div class="header">
 		<h1>Lab Results</h1>
-		<Button onclick={openAddModal}>Add Lab Result</Button>
+		<Button on:click={openAddModal}>Add Lab Result</Button>
 	</div>
 
 	{#if sortedLabResults.length > 0}
@@ -77,7 +75,7 @@
 	{/if}
 </div>
 
-<Modal bind:open={showModal} title="Add Lab Result" large>
+<Modal bind:open={showModal} title="Add Lab Result" size="large">
 	<LabResultForm onClose={closeModal} />
 </Modal>
 

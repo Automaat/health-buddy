@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
-	import Button from '$lib/components/Button.svelte';
-	import Modal from '$lib/components/Modal.svelte';
+	import { Button, Modal, Card } from '@mskalski/home-ui';
 	import MedicationCard from '$lib/components/MedicationCard.svelte';
 	import MedicationForm from '$lib/components/MedicationForm.svelte';
-	import Card from '$lib/components/Card.svelte';
 	import type { PageData } from './$types';
 	import type { Medication } from '$lib/types/medication';
 
@@ -86,7 +84,7 @@
 <div class="medications-page">
 	<div class="header">
 		<h1>Medications</h1>
-		<Button onclick={openAddModal}>Add Medication</Button>
+		<Button on:click={openAddModal}>Add Medication</Button>
 	</div>
 
 	{#if medications.length > 0}

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Button from './Button.svelte';
-	import Input from './Input.svelte';
+	import { Button, Input } from '@mskalski/home-ui';
 	import { LAB_TEST_TYPES } from '$lib/constants';
 
 	export let onClose: () => void;
@@ -128,7 +127,7 @@
 	<div class="form-section">
 		<div class="section-header">
 			<h3>Test Values</h3>
-			<Button type="button" variant="secondary" size="small" onclick={populateCommonTests}>
+			<Button type="button" variant="secondary" size="small" on:click={populateCommonTests}>
 				Pre-fill Lipid Panel
 			</Button>
 		</div>
@@ -191,7 +190,7 @@
 			</div>
 		{/each}
 
-		<Button type="button" variant="secondary" onclick={addValue}>+ Add Another Test</Button>
+		<Button type="button" variant="secondary" on:click={addValue}>+ Add Another Test</Button>
 	</div>
 
 	<div class="form-section">
@@ -202,7 +201,7 @@
 	</div>
 
 	<div class="form-actions">
-		<Button type="button" variant="secondary" onclick={onClose}>Cancel</Button>
+		<Button type="button" variant="secondary" on:click={onClose}>Cancel</Button>
 		<Button type="submit" variant="primary">Add Lab Result</Button>
 	</div>
 </form>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Card from './Card.svelte';
+	import { Card, CardHeader, CardTitle, CardContent } from '@mskalski/home-ui';
 	import type { EChartsOption } from 'echarts';
 
 	interface Props {
@@ -43,12 +43,10 @@
 </script>
 
 <Card {variant}>
-	<h3>{title}</h3>
-	<div bind:this={chartElement} style="width: 100%; height: {height};"></div>
+	<CardHeader>
+		<CardTitle>{title}</CardTitle>
+	</CardHeader>
+	<CardContent>
+		<div bind:this={chartElement} style="width: 100%; height: {height};"></div>
+	</CardContent>
 </Card>
-
-<style>
-	h3 {
-		margin-bottom: var(--size-3);
-	}
-</style>

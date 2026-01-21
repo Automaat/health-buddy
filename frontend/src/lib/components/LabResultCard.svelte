@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Card from './Card.svelte';
-	import Button from './Button.svelte';
+	import { Card, CardContent, Button } from '@mskalski/home-ui';
 	import { formatDate } from '$lib/utils/format';
 	import type { LabResult } from '$lib/types/lab-result';
 
@@ -24,7 +23,8 @@
 </script>
 
 <Card variant={hasAbnormalValues ? 'red' : 'default'}>
-	<div class="lab-result-card">
+	<CardContent>
+		<div class="lab-result-card">
 		<div class="header" on:click={toggleExpanded} on:keydown={handleHeaderKeydown} role="button" tabindex="0">
 			<div class="header-info">
 				<h3>{formatDate(labResult.test_date)} - {labResult.lab_name}</h3>
@@ -79,13 +79,14 @@
 				{/if}
 
 				<div class="actions">
-					<Button variant="danger" size="small" onclick={() => onDelete(labResult.id)}>
+					<Button variant="danger" size="small" on:click={() => onDelete(labResult.id)}>
 						Delete
 					</Button>
 				</div>
 			</div>
 		{/if}
-	</div>
+		</div>
+	</CardContent>
 </Card>
 
 <style>
