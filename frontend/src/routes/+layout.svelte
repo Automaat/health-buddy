@@ -14,6 +14,7 @@
 		{ href: '/goals', label: 'Health Goals', icon: '🎯' },
 		{ href: '/vaccinations', label: 'Vaccinations', icon: '💉' },
 		{ href: '/history', label: 'Medical History', icon: '📋' },
+		{ href: '/import', label: 'Import', icon: '📥' },
 		{ href: '/config', label: 'Settings', icon: '⚙️' }
 	];
 </script>

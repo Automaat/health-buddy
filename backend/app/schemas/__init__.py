@@ -5,6 +5,11 @@ from app.schemas.health_metric import (
     HealthMetricResponse,
     HealthMetricUpdate,
 )
+from app.schemas.import_health import (
+    HealthAutoExportPayload,
+    ImportResult,
+    ImportStatus,
+)
 from app.schemas.lab_result import (
     LabResultCreate,
     LabResultResponse,
@@ -25,12 +30,15 @@ __all__ = [
     "AppConfigCreate",
     "AppConfigResponse",
     "AppConfigUpdate",
+    "HealthAutoExportPayload",
     "HealthGoalCreate",
     "HealthGoalResponse",
     "HealthGoalUpdate",
     "HealthMetricCreate",
     "HealthMetricResponse",
     "HealthMetricUpdate",
+    "ImportResult",
+    "ImportStatus",
     "LabResultCreate",
     "LabResultResponse",
     "LabResultUpdate",

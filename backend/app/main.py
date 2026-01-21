@@ -6,6 +6,7 @@ from app.api import (
     dashboard,
     goals,
     health_metrics,
+    import_health,
     lab_results,
     medical_history,
     medications,
@@ -30,6 +31,7 @@ app.add_middleware(
 
 app.include_router(dashboard.router, prefix=settings.api_prefix)
 app.include_router(health_metrics.router, prefix=settings.api_prefix)
+app.include_router(import_health.router, prefix=settings.api_prefix)
 app.include_router(medications.router, prefix=settings.api_prefix)
 app.include_router(supplements.router, prefix=settings.api_prefix)
 app.include_router(lab_results.router, prefix=settings.api_prefix)

@@ -1,0 +1,100 @@
+"""API endpoints for importing Apple Health data."""
+
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
+from sqlalchemy.orm import Session
+
+from app.core.database import get_db
+from app.models import HealthMetric
+from app.schemas import HealthAutoExportPayload, HealthMetricCreate, ImportResult
+from app.services.apple_health_parser import apple_health_parser
+from app.services.crud import health_metric
+
+router = APIRouter(prefix="/import", tags=["import"])
+
+DEFAULT_OWNER = "default_user"
+
+
+@router.post("/apple-health", response_model=ImportResult)
+async def import_apple_health_xml(
+    file: UploadFile = File(...),
+    owner: str = Query(DEFAULT_OWNER),
+    db: Session = Depends(get_db),
+) -> ImportResult:
+    """Import Apple Health export XML file."""
+    if not file.filename or not file.filename.endswith(".xml"):
+        raise HTTPException(status_code=400, detail="File must be an XML file")
+
+    content = await file.read()
+    if not content:
+        raise HTTPException(status_code=400, detail="File is empty")
+
+    try:
+        metrics = apple_health_parser.parse_xml(content, owner)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to parse XML: {e}") from e
+
+    return _import_metrics(db, metrics, owner)
+
+
+@router.post("/apple-health/webhook", response_model=ImportResult)
+def import_apple_health_webhook(
+    payload: HealthAutoExportPayload,
+    owner: str = Query(DEFAULT_OWNER),
+    key: str | None = Query(None),
+    db: Session = Depends(get_db),
+) -> ImportResult:
+    """Webhook endpoint for Health Auto Export app."""
+    data: dict = {}
+    if payload.data:
+        data = {"data": payload.data}
+    elif payload.metrics:
+        data = {"data": {"metrics": payload.metrics}}
+    else:
+        raise HTTPException(status_code=400, detail="No metrics data in payload")
+
+    metrics = apple_health_parser.parse_auto_export_json(data, owner)
+    return _import_metrics(db, metrics, owner)
+
+
+def _import_metrics(
+    db: Session, metrics: list[HealthMetricCreate], owner: str
+) -> ImportResult:
+    """Import metrics with deduplication."""
+    imported = 0
+    skipped = 0
+    errors = 0
+
+    for metric in metrics:
+        try:
+            existing = (
+                db.query(HealthMetric)
+                .filter(
+                    HealthMetric.owner == owner,
+                    HealthMetric.metric_type == metric.metric_type,
+                    HealthMetric.measured_at == metric.measured_at,
+                )
+                .first()
+            )
+
+            if existing:
+                if existing.source == "manual":
+                    skipped += 1
+                    continue
+                existing.value = metric.value
+                existing.unit = metric.unit
+                existing.source = metric.source
+                db.commit()
+                imported += 1
+            else:
+                health_metric.create(db=db, obj_in=metric)
+                imported += 1
+        except Exception:
+            errors += 1
+            db.rollback()
+
+    return ImportResult(
+        total_records=len(metrics),
+        imported=imported,
+        skipped=skipped,
+        errors=errors,
+    )
